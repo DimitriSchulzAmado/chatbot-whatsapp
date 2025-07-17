@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from services.waha import Waha
 
 
 app = Flask(__name__)
@@ -8,6 +9,15 @@ def webhook():
     data = request.json
     
     print(f"EVENTO RECEBIDO: {data}")
+    
+    waha = Waha()
+    
+    chat_id = data['payload']['from']
+    waha.send_message(
+        chat_id=chat_id,
+        message='Resposta automática :)',
+    )
+    
     return jsonify({"status": "success"}), 200
 
 
