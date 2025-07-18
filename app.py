@@ -12,7 +12,9 @@ app = Flask(__name__)
 def webhook():
     data = request.json
 
-    print(f'EVENTO RECEBIDO: {data}')
+    print(f'EVENTO RECEBIDO: \
+        \n{data['payload']['from']} \
+        \n{data['payload']['body']}')
 
     waha = Waha()
     ai_bot = AIBot()
@@ -22,7 +24,7 @@ def webhook():
 
     waha.start_typing(chat_id=chat_id)
 
-    response = ai_bot.invoke(question=received_message)
+    response = ai_bot.invoke(user_message=received_message)
     waha.send_message(
         chat_id=chat_id,
         message=response,

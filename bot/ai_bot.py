@@ -13,7 +13,7 @@ class AIBot:
     def __init__(self):
         self.__chat = ChatGroq(model='llama-3.3-70b-versatile')
     
-    def invoke(self, question):
+    def invoke(self, user_message):
         prompt = PromptTemplate(
             input_variables=['texto'],
             template='''
@@ -25,6 +25,6 @@ class AIBot:
         )
         chain = prompt | self.__chat | StrOutputParser()
         response = chain.invoke({
-            'texto': question
+            'texto': user_message
         })
         return response
