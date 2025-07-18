@@ -11,16 +11,16 @@ app = Flask(__name__)
 @app.route('/api/chatbot/webhook/', methods=['POST'])
 def webhook():
     data = request.json
-
-    print(f'EVENTO RECEBIDO: \
-        \n{data['payload']['from']} \
-        \n{data['payload']['body']}')
-
-    waha = Waha()
-    ai_bot = AIBot()
-
     chat_id = data['payload']['from']
     received_message = data['payload']['body']
+    is_group = '@g.us' in chat_id
+    is_status = 'status@broadcast' in chat_id
+    
+    if is_group or is_status:
+        return jsonify({'status': 'success', 'message': 'Group/status message ignored'}), 200
+    
+    waha = Waha()
+    ai_bot = AIBot()
 
     waha.start_typing(chat_id=chat_id)
 
